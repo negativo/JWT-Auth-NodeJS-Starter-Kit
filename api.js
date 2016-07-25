@@ -1,35 +1,35 @@
-var express 	= require('express');
-var app         = express();
-var bodyParser  = require('body-parser');
-var morgan      = require('morgan');
-var mongoose    = require('mongoose');
-var jwt    = require('jsonwebtoken'); 
-var config = require('./config'); 
-var User   = require('./controllers/models/user'); 
-var UserController = require('./controllers/api/user.js')(User);
-var Main = require('./controllers/api/main.js')(User);
-var Auth = require('./controllers/api/auth.js')(User,jwt);
-var port = process.env.PORT || 8282; 
+require('dotenv').load();
 
-mongoose.connect(config.database); 
-app.set('superSecret', config.secret); 
+var express    = require('express');
+var app        = express();
+var bodyParser = require('body-parser');
+var morgan     = require('morgan');
+var config     = require('./app/config/config');
+var database   = require('./app/config/database');
+var routes     = require('./app/routes');
+var parseToken = require('./app/middlewares/parsetoken.middleware');
+var port       = process.env.PORT || 8282;
+
+
+database.connect();
+
+app.set('superSecret', config.secret); // req config.secret or process.env.APP_SECRET where app is not present
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(morgan('dev'));
 
-app.get('/setup', Main.setup );
-app.get('/', Main.index );
+if(process.env.NODE_ENV === 'dev'){
+  app.use(morgan('dev'));
+}
 
-var apiRoutes = express.Router();
+app.use(parseToken);
+routes(express, app);
 
-apiRoutes.use(Auth.checkToken);
-apiRoutes.post('/authenticate', Auth.authenticate );
-apiRoutes.get('/', Main.apiIndex );
-apiRoutes.get('/users',UserController.getAll);
-apiRoutes.get('/check', Main.check );
-app.use('/api', apiRoutes);
+app.listen(port, () => {
+  console.log('JWT API at http://localhost:' + port);
+});
 
-app.listen(port);
-
-console.log('JWT API at http://localhost:' + port);
+/**
+ * TESTS
+ */
+module.exports = app;
