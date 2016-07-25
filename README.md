@@ -5,12 +5,11 @@ This repo uses JSON Web Tokens and the [jsonwebtoken](https://github.com/auth0/n
 This is a starting point to have an API up and running in notime.
 
 
-##Installation 
+##Installation
 
 	1 - go to the project folder
 	2 - npm install
-	3 - run mongodb 
-	4 - node api.js
-
-
-
+	3 - run mongodb
+	5 - rename .env.example and change with your variables
+	4 - npm start
+	5 - npm test

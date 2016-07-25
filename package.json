@@ -1,11 +1,24 @@
 {
   "name": "Simple-JWT-api-starter-kit",
   "main": "api.js",
+  "scripts": {
+    "start": "nodemon api || node api",
+    "production": "NODE_ENV=production nodemon api || node api",
+    "test": "PORT=3001 NODE_ENV=TEST mocha"
+  },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
+    "dotenv": "^2.0.0",
     "express": "^4.13.4",
     "jsonwebtoken": "^5.7.0",
     "mongoose": "^4.4.5",
     "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "expect": "^1.20.2",
+    "mocha": "^2.5.3"
   }
 }
