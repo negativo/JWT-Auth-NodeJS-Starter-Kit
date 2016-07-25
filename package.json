@@ -2,8 +2,8 @@
   "name": "Simple-JWT-api-starter-kit",
   "main": "api.js",
   "scripts": {
-    "start": "nodemon api || node api",
-    "production": "NODE_ENV=production nodemon api || node api",
+    "start":"forever --watch --watchDirectory ./app api.js",
+    "production": "NODE_ENV=production forever start api.js",
     "test": "PORT=3001 NODE_ENV=TEST mocha"
   },
   "dependencies": {

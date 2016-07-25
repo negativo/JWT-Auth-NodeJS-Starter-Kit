@@ -1,7 +1,7 @@
 var User           = require('./models/user.model');
 var UserController = require('./controllers/user.controller')(User);
-var Main           = require('./controllers/main.controller')(User);
-var Auth           = require('./controllers/auth.controller')(User);
+var MainController = require('./controllers/main.controller')(User);
+var AuthController = require('./controllers/auth.controller')(User);
 
 var AuthMiddle = require('./middlewares/auth.middleware.js');
 
@@ -17,15 +17,17 @@ module.exports = function (express, app) {
    * API
    */
   app.use('/api', apiRoutes);
+  apiRoutes.post('/auth', Auth.authenticate );
+
+  apiRoutes.use(MainController.checkToken);
 
   apiRoutes.get('/', Main.apiIndex );
-  apiRoutes.post('/auth', Auth.authenticate );
   apiRoutes.get('/users', AuthMiddle('admin'), UserController.getAll);
 
   /**
    * TESTs
    */
-  apiRoutes.get('/check'      , AuthMiddle()       , Main.check );
+  apiRoutes.get('/check'      , Main.check );
   apiRoutes.get('/check-admin', AuthMiddle('admin'), Main.adminCheck );
 
 }
