@@ -4,9 +4,9 @@ module.exports = function(User){
 
 		setup:function(req, res) {
 			var nick = new User({
-				email: 'davidebrr@gmail.com',
-				name: 'davide',
-				password: 'password',
+				email: process.env.EMAIL,
+				name: process.env.EMAIL,
+				password: process.env.EMAIL,
 				admin: true
 			});
 			nick.save(function(err) {

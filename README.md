@@ -10,7 +10,7 @@ This is a starting point to have an API up and running in notime.
 
 ##Installation
 
-This project needs NodeJS > v5.0.0, MongoDB and a bunch of packages defined in `package.json`
+This project needs NodeJS > v5.0.0, MongoDB and a `forever`
 
 - clone the project `git clone git@github.com:negativo/JWT-Auth-NodeJS-Starter-Kit`
 - run `npm install` 
@@ -18,3 +18,21 @@ This project needs NodeJS > v5.0.0, MongoDB and a bunch of packages defined in `
 - edit `.env.example` and save it as `.env`
 - npm start
 - npm test
+
+##API
+
+###Setup test user
+
+To setup an admin user edit your `.env` file and request the url   `http://localhost:8282/setup`
+
+###Authenticate
+
+POST http://localhost:8282/auth
+
+	{
+		name:"jwtauth",
+		password:"jwtauth"
+
+	}
+
+
