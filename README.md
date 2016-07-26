@@ -29,7 +29,7 @@ To setup an admin user edit your `.env` file and request the url  `http://localh
 
 ###Authenticate
 
-To authenticate a user do POST request to http://localhost:8282/auth
+To authenticate a user do a POST request to http://localhost:8282/auth
 with the `name` and the `password` in the body
 
 	{
