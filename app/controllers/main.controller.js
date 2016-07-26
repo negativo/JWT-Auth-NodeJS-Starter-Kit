@@ -5,14 +5,14 @@ module.exports = function(User){
 		setup:function(req, res) {
 			var nick = new User({
 				email: process.env.EMAIL,
-				name: process.env.EMAIL,
-				password: process.env.EMAIL,
+				name: process.env.NAME,
+				password: process.env.PASSWORD,
 				admin: true
 			});
 			nick.save(function(err) {
 				if (err) throw err;
 				console.log('User saved successfully');
-				return res.json({ success: true });
+				return res.json({ success: true, user:nick });
 			});
 		},
 		index: function(req, res) {
