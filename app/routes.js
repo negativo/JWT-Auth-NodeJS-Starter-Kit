@@ -9,25 +9,29 @@ module.exports = function (express, app) {
 
   var apiRoutes = express.Router();
 
-  app.get('/', Main.index );
-
-  app.get('/setup', Main.setup );
+  app.get('/', MainController.index );
+  app.get('/setup', MainController.setup );
 
   /**
-   * API
+   * API public endpoint
    */
   app.use('/api', apiRoutes);
-  apiRoutes.post('/auth', Auth.authenticate );
+  apiRoutes.post('/auth', AuthController.authenticate );
+  apiRoutes.get('/', MainController.apiIndex );
 
-  apiRoutes.use(MainController.checkToken);
 
-  apiRoutes.get('/', Main.apiIndex );
+  apiRoutes.use( AuthMiddle() );
+
+  /**
+   * API private endpoint
+   */
+
   apiRoutes.get('/users', AuthMiddle('admin'), UserController.getAll);
 
   /**
    * TESTs
    */
-  apiRoutes.get('/check'      , Main.check );
-  apiRoutes.get('/check-admin', AuthMiddle('admin'), Main.adminCheck );
+  apiRoutes.get('/check'      , MainController.check );
+  apiRoutes.get('/check-admin', AuthMiddle('admin'), MainController.adminCheck );
 
 }
