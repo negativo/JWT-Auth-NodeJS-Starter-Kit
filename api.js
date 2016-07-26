@@ -7,9 +7,7 @@ var morgan     = require('morgan');
 var config     = require('./app/config/config');
 var database   = require('./app/config/database');
 var routes     = require('./app/routes');
-var parseToken = require('./app/middlewares/parsetoken.middleware');
 var port       = process.env.PORT || 8282;
-
 
 database.connect();
 
@@ -22,14 +20,10 @@ if(process.env.NODE_ENV === 'dev'){
   app.use(morgan('dev'));
 }
 
-app.use(parseToken);
 routes(express, app);
 
 app.listen(port, () => {
   console.log('JWT API at http://localhost:' + port);
 });
 
-/**
- * TESTS
- */
 module.exports = app;
