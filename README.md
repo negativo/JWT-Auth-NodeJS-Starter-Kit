@@ -16,8 +16,8 @@ This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 - run `npm install` 
 - run `mongod`
 - edit `.env.example` and save it as `.env`
-- npm start
-- npm test
+- `npm start`
+- `npm test`
 
 ##API
 
@@ -26,6 +26,8 @@ This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 To setup an admin user edit your `.env` file and request the url  `http://localhost:8282/setup` 
 
 `curl http://localhost:8282/setup`
+
+###Versioning
 
 ###Authenticate
 

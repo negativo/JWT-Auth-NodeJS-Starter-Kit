@@ -12,7 +12,7 @@ module.exports = function (express, app) {
   app.get('/', MainController.index );
   app.get('/setup', MainController.setup );
 
-  app.use('/api', apiRoutes);
+  app.use('/api/v1', apiRoutes);
 
   apiRoutes.post('/auth', AuthController.authenticate );
   apiRoutes.get('/', MainController.apiIndex );
@@ -20,6 +20,14 @@ module.exports = function (express, app) {
   apiRoutes.use( AuthMiddle() );
 
   apiRoutes.get('/users', AuthMiddle('admin'), UserController.getAll);
+
+
+  apiRoutes.post('/users', UserController.create);
+  apiRoutes.get('/users', UserController.getAll);
+  apiRoutes.get('/users/:id', UserController.view);
+  apiRoutes.put('/users/:id', UserController.update);
+  apiRoutes.delete('/users/:id', UserController.delete);
+
 
   apiRoutes.get('/check'      , MainController.check );
   apiRoutes.get('/check-admin', AuthMiddle('admin'), MainController.adminCheck );

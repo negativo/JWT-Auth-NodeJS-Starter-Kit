@@ -23,20 +23,20 @@ UserSchema.methods.checkPassword = function (hash, done) {
     if(res) return done(null, true );
     return done('Wrong Password!');
   });
-}
+};
 
 UserSchema.methods.auth = function (done) {
-  var usr = this;
+  var user = this;
   var token = jwt.sign({
-    name: usr.name,
-    admin: usr.admin
+    name: user.name,
+    admin: user.admin
   }, config.secret, {expiresIn: 86400 });
   done(null, {
     expire: Date.now() + 86400,
     message: 'Authorization token',
     token: token
   });
-}
+};
 
 
 module.exports = mongoose.model('User', UserSchema, 'users');
