@@ -4,7 +4,7 @@ module.exports = function(User){
 
 	return {
 		authenticate:function(req, res) {
-			var { name, password } = req.body;
+			var { username, password } = req.body;
 			if(!name || !name.length ) {
 				return res.status(400).json({
 					success: false,
@@ -12,7 +12,7 @@ module.exports = function(User){
 				})
 			};
 			User.findOne({
-				name: name
+				username: username
 			}, function(err, user) {
 				if (err) {
 					return res.status(500).json({

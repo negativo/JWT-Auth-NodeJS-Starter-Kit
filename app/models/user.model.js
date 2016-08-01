@@ -4,7 +4,7 @@ var jwt      = require('jsonwebtoken');
 var config   = require('../config/config');
 
 var UserSchema = mongoose.Schema({
-	name: { type:String, require:true, unique: true },
+	username: { type:String, require:true, unique: true },
 	email: { type:String, require:true, unique: true },
 	password: { type:String, require:true,select: false },
 	admin: { type:Boolean, default: false }
@@ -36,7 +36,7 @@ UserSchema.methods.auth = function (done) {
 	var user = this;
 
 	var token = jwt.sign({
-		name: user.name,
+		username: user.username,
 		admin: user.admin
 	}, config.secret, {expiresIn: 86400 });
 
