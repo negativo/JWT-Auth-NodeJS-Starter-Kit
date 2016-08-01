@@ -21,6 +21,14 @@ module.exports = function (express, app) {
 
   apiRoutes.get('/users', AuthMiddle('admin'), UserController.getAll);
 
+
+  apiRoutes.post('/users', UserController.create);
+  apiRoutes.get('/users', UserController.getAll);
+  apiRoutes.get('/users/:id', UserController.view);
+  apiRoutes.put('/users/:id', UserController.update);
+  apiRoutes.delete('/users/:id', UserController.delete);
+
+
   apiRoutes.get('/check'      , MainController.check );
   apiRoutes.get('/check-admin', AuthMiddle('admin'), MainController.adminCheck );
 

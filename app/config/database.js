@@ -5,23 +5,32 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 
 module.exports = {
-  connect: () => {
+	connect: () => {
 
-    db.on('error', console.error.bind(console, 'MongoDB Connection Error. Please make sure that MongoDB is running.'));
-    db.once('open', () => {
-      console.log('--DB CONNECTED--');
-      process.emit('event:mongodb_connected');
-    });
-    if(process.env.NODE_ENV === 'TEST'){
-      mongoose.connect(config.test_database);  
-    } else {
-      mongoose.connect(config.database);
-    }
+		db.on('error',
+			console.error.bind(console, 'MongoDB Connection Error. Please make sure that MongoDB is running.')
+		);
 
-    return db;
-  },
-  info: () => {
-    //  MongoDB status (0 = disconnected; 1 = connected; 2 = connecting; 3 = disconnecting)
-    return db.readyState;
-  }
+		db.once('open', () => {
+
+			process.emit('event:mongodb_connected');
+
+		});
+
+		if(process.env.NODE_ENV === 'TEST'){
+
+			mongoose.connect(config.test_database);
+
+		} else {
+
+			mongoose.connect(config.database);
+
+		}
+
+		return db;
+	},
+	info: () => {
+		//  MongoDB status (0 = disconnected; 1 = connected; 2 = connecting; 3 = disconnecting)
+		return db.readyState;
+	}
 }
