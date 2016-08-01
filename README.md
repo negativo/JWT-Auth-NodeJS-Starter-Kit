@@ -7,13 +7,17 @@ This repo uses JSON Web Tokens and the [jsonwebtoken](https://github.com/auth0/n
 
 This is a starting point to have an API up and running in notime.
 
+The Api Features:
+
+	- JWT Auth Token
+	- User Management
 
 ##Installation
 
 This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 
 - clone the project `git clone git@github.com:negativo/JWT-Auth-NodeJS-Starter-Kit`
-- run `npm install` 
+- run `npm install`
 - run `mongod`
 - edit `.env.example` and save it as `.env`
 - `npm start`
@@ -23,7 +27,7 @@ This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 
 ###Setup test user
 
-To setup an admin user edit your `.env` file and request the url  `http://localhost:8282/setup` 
+To setup an admin user edit your `.env` file and request the url  `http://localhost:8282/setup`
 
 `curl http://localhost:8282/setup`
 
