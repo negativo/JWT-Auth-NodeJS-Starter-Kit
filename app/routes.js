@@ -12,7 +12,7 @@ module.exports = function (express, app) {
   app.get('/', MainController.index );
   app.get('/setup', MainController.setup );
 
-  app.use('/api/v1', apiRoutes);
+  app.use('/api', apiRoutes);
 
   apiRoutes.post('/auth', AuthController.authenticate );
   apiRoutes.get('/', MainController.apiIndex );

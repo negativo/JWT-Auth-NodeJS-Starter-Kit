@@ -16,7 +16,19 @@ module.exports = function(User){
 
 		view: function(req, res){
 
-			res.sendStatus(200);
+			User.find({"_id":req.params.id}, function(err, user) {
+				if(!err) {
+
+					if(!user){
+						res.json({error:'no user found'});
+					}else{
+
+						res.json({data:user});
+					}
+				}else{
+					res.json({error:err});
+				}
+			});
 
 		},
 
