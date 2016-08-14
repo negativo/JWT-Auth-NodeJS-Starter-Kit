@@ -80,7 +80,7 @@ module.exports = function(User){
 
 			var new_user = new User();
 
-			new_user.name = req.body.user.name;
+			new_user.username = req.body.user.username;
 			new_user.password = req.body.user.password;
 			new_user.email = req.body.user.email;
 			new_user.admin = false;
