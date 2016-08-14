@@ -19,9 +19,6 @@ module.exports = function (express, app) {
 
   apiRoutes.use( AuthMiddle() );
 
-  apiRoutes.get('/users', AuthMiddle('admin'), UserController.getAll);
-
-
   apiRoutes.post('/users', UserController.create);
   apiRoutes.get('/users', UserController.getAll);
   apiRoutes.get('/users/:id', UserController.view);
