@@ -6,7 +6,7 @@ var app = require('../api.js');
 chai.use(chaiHttp);
 
 describe('Server', () => {
-  it('should spin the server', ( done ) => {
+  it('Should be online', ( done ) => {
     chai
       .request(app)
       .get('/')
@@ -16,14 +16,5 @@ describe('Server', () => {
         done();
       });
   });
-  it('should return API index', ( done ) => {
-    chai
-      .request(app)
-      .get('/api')
-      .end((err,res) => {
-        expect(res).toExist();
-        expect(res.status).toBe(200);
-        done();
-      });
-  });
+ 
 })

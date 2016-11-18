@@ -3,7 +3,7 @@ var UserController = require('./controllers/user.controller')(User);
 var MainController = require('./controllers/main.controller')(User);
 var AuthController = require('./controllers/auth.controller')(User);
 
-var AuthMiddle = require('./middlewares/auth.middleware.js');
+var Auth = require('./middlewares/auth.middleware.js');
 
 module.exports = function (express, app) {
 
@@ -17,7 +17,7 @@ module.exports = function (express, app) {
   apiRoutes.post('/auth', AuthController.authenticate );
   apiRoutes.get('/', MainController.apiIndex );
 
-  apiRoutes.use( AuthMiddle() );
+  apiRoutes.use( Auth() );
 
   apiRoutes.post('/users', UserController.create);
   apiRoutes.get('/users', UserController.getAll);
@@ -27,6 +27,6 @@ module.exports = function (express, app) {
 
 
   apiRoutes.get('/check'      , MainController.check );
-  apiRoutes.get('/check-admin', AuthMiddle('admin'), MainController.adminCheck );
+  apiRoutes.get('/check-admin', Auth('admin'), MainController.adminCheck );
 
 }
