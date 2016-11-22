@@ -1,0 +1,43 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no")
+    meta(name="author" content="")
+    meta(name="subject" content="")
+    meta(name="Description" content="")
+    meta(name="Classification" content="")
+    meta(name="Keywords" content="")
+    meta(name="Geography" content="")
+    meta(name="Language" content="")
+    meta(name="Copyright" content="")
+    meta(name="Designer" content="")
+    meta(name="Publisher" content="")
+    meta(name="distribution" content="")
+    meta(name="Robots" content="")
+    meta(name="zipcode" content="")
+    meta(name="city" content="")
+    meta(name="country" content="")
+
+    block title
+      title= name
+
+    //- FACEBOOK
+    block facebookOpenGraph
+      meta(property="og:url"                content="")
+      meta(property="og:type"               content="")
+      meta(property="og:title"              content="")
+      meta(property="og:description"        content="")
+      meta(property="og:image"              content="")
+
+    //- LOADERS
+    link(rel="stylesheet" href="/css/vendors.css")
+    link(rel="stylesheet" href="/css/public.css")
+  body
+
+    block content
+
+    block scripts
+      script(src='/assets/public.vendors.bundle.js')
+      script(src='/assets/main.public.bundle.js')
