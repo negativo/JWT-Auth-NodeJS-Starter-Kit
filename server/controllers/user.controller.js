@@ -1,30 +1,47 @@
 const User = require('../models/user.model')
-const Setting = require('../models/setting.model')
 
 module.exports = {
   index: (req, res) => {
-    User.find({}, (err, users) => {
-      if (err) return res.status(500).json(err)
+    return User.find({})
+    .then((users) => {
       return res.json({
         success: true,
         status: 200,
         users,
       })
     })
+    .catch((err) => {
+      return res.status(500).json({
+        success: false,
+        status: 500,
+        message: err,
+      })
+    })
   },
+
+  /**
+   * Get "logged user" personal data
+   * route is restricted by JWT, JWT data if authenticated is in req.user
+   */
   get: (req, res) => {
     const { user } = req
-    User.findById(user._id, '-password -__v -created', (err, usr) => {
-      if (err) return res.status(500).json(err)
-      if (!usr) {
-        return res.status(403).json({
-          success: false,
-          message: 'User not found',
+    return User.findById(user._id, '-password -__v -created')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject({
+          message: 'User not found.',
+          status: 404,
         })
       }
       return res.json({
         success: true,
-        user: usr,
+        user,
+      })
+    })
+    .catch((err) => {
+      return res.status(err.status ? err.status : 500).json({
+        success: false,
+        message: err.message ? err.message : err,
       })
     })
   },
@@ -263,34 +280,26 @@ module.exports = {
   },
   create: (req, res) => {
     const { body: newUser } = req
-    const user = new User({
-      username: newUser.username,
-      email: newUser.email,
-      password: newUser.password,
-      admin: newUser.admin,
-    })
-
-    User
-    .count({})
-    .exec()
-    .then((count) => {
-      if (!count) user.admin = true
-      if (!req.appSetting || req.appSetting.joinAllowed) {
-        return user.save()
-      }
-      return Promise.reject({
-        action: 'create user',
+    if (!newUser.username) {
+      return res.status(403).json({
         success: false,
-        status: 403,
-        message: 'Register disabled, contact the administrator',
+        message: 'Username is required, none provided.'
       })
-    })
-    .then(() => {
-      if (process.env.NODE_ENV !== 'production') {
-        new Setting({ joinAllowed: true }).save()
-      } else {
-        new Setting().save()
-      }
+    }
+    if (!newUser.email) {
+      return res.status(403).json({
+        success: false,
+        message: 'Email is required, none provided.'
+      })
+    }
+    if (!newUser.password) {
+      return res.status(403).json({
+        success: false,
+        message: 'Password is required, none provided.'
+      })
+    }
+    return User.create(newUser)
+    .then((user) => {
       return user.auth()
     })
     .then((token) => {
@@ -337,7 +346,7 @@ module.exports = {
     })
   },
   usernameExist: (req, res) => {
-    const username = req.body.username || req.params.username
+    const { username } = req.params
     if (!username) {
       return res.status(400).json({
         success: false,
@@ -365,7 +374,7 @@ module.exports = {
       })
   },
   userEmailExist: (req, res) => {
-    const email = req.body.email || req.params.email
+    const { email } = req.params
     if (!email) {
       return res.status(400).json({
         success: false,
@@ -393,7 +402,7 @@ module.exports = {
       })
   },
   adminDelete: (req, res) => {
-    const userId = req.body.id || req.params.id;
+    const userId = req.body.id || req.params.id
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -428,22 +437,27 @@ module.exports = {
     })
   },
   delete: (req, res) => {
-    const { user } = req
-    User.findById(user._id, (err, usr) => {
-      if (err) return res.status(500).json(err)
-      if (!usr) {
-        return res.status(404).json({
-          success: false,
-          message: `User ${user.username} don't exists!`,
+    const { user } = req // personal route, user is parsed in auth.middleware
+    return User.findById(user._id)
+    .then((user) => {
+      if (!user) {
+        return Promise.reject({
           status: 404,
+          message: 'User not found.',
         })
       }
-      return usr.remove((error, del) => {
-        if (error) return res.status(500).json(error)
-        return res.json({
-          success: true,
-          message: `User ${del.username} removed.`,
-        })
+      return user.remove()
+    })
+    .then((deleted) => {
+      return res.json({
+        success: true,
+        message: `User ${deleted.username} removed.`,
+      })
+    })
+    .catch((err) => {
+      return res.status(err.status ? err.status : 500).json({
+        success: false,
+        message: err.message ? err.message : err,
       })
     })
   },

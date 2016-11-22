@@ -1,8 +1,8 @@
 const { testenv } = global
-var app = require(testenv.app)
-var chai = require('chai')
-var chaiHttp = require('chai-http')
-var expect = require('expect')
+const app = require(testenv.app)
+const chai = require('chai')
+const chaiHttp = require('chai-http')
+const expect = require('expect')
 
 chai.use(chaiHttp)
 

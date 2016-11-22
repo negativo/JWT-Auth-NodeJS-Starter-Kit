@@ -5,7 +5,7 @@ global.testenv = {}
  */
 const path = require('path')
 testenv.rootdir = path.join(__dirname, '../')
-testenv.app = path.join(testenv.rootdir, 'server.js')
+testenv.app = path.join(testenv.rootdir, 'api.js')
 testenv.serverdir = path.join(testenv.rootdir, 'server/')
 
 global.getRandomInt = (min, max) => {

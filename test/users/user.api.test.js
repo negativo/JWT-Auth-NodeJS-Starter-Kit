@@ -7,7 +7,7 @@ const User = require(testenv.serverdir + 'models/user.model')
 
 chai.use(chaiHttp)
 
-describe('User - API', () => {
+describe.only('User - API', () => {
   var admin_token, user_token
   var normal_user = {
     username: 'TestUser' + Date.now(),
@@ -21,11 +21,6 @@ describe('User - API', () => {
     admin: true,
   }
   admin_user.email = `${admin_user.username}@randomprovider.com`
-
-  after(() => {
-    testenv.adminAuthToken = admin_token
-    testenv.userAuthToken = user_token
-  })
 
   /**
    * USER CREATION
@@ -186,7 +181,6 @@ describe('User - API', () => {
       .get('/api/users')
       .set('Authorization', admin_token)
       .end((err, res) => {
-        if(err) throw err
         expect(res.status).toBe(200)
         expect(res.body.success).toBe(true)
         done()
@@ -218,7 +212,7 @@ describe('User - API', () => {
   })
 
   after((done) => {
-    Promise.resolve(
+    return Promise.resolve(
       User.remove({})
     ).then(done()).catch(done)
   })

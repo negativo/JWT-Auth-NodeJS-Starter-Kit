@@ -4,9 +4,10 @@ const jwt = require('jsonwebtoken')
 const secrets = require('../config/secrets')
 const bcrypt = require('bcrypt-nodejs')
 const validator = require('validator')
+const shortid = require('shortid')
 
 const UserSchema = mongoose.Schema({
-  oid: { type: Number },
+  shortId: { type: String, default: shortid.generate }, // for frontend in justincase
   email: {
     type: String,
     validate: {
@@ -20,6 +21,7 @@ const UserSchema = mongoose.Schema({
   password: { type: String, required: [true, 'Password is required.'] },
   created: { type: Date, default: Date.now() },
   admin: { type: Boolean, default: false },
+  //.........
 })
 
 
