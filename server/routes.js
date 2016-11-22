@@ -1,7 +1,7 @@
 /**
   * controllers
   */
-const UserCtrl = require('./controllers/user.controller')
+const UserController = require('./controllers/user.controller')
 
 /**
  * middleware
@@ -22,23 +22,26 @@ module.exports = (express, app) => {
   /**
    * USERS
    */
-  api.get('/users', Auth('admin'), UserCtrl.index)
-  api.post('/user/auth', UserCtrl.auth)
-  api.post('/user', UserCtrl.create)
-  api.post('/user/:id/check-password', Auth(), UserCtrl.checkPassword)
-  api.post('/user/:id/change-password', Auth(), UserCtrl.changePassword)
-  api.post('/user/:id/change-email', Auth(), UserCtrl.changeEmail)
-  api.get('/user/:username/exist', UserCtrl.exist)
-  api.get('/user/username/:username/exist', UserCtrl.usernameExist)
-  api.get('/user/email/:email/exist', UserCtrl.userEmailExist)
-  api.delete('/user/:id', Auth('admin'), UserCtrl.adminDelete) // admin delete any user
+  api.get('/users', Auth('admin'), UserController.index)
+  api.post('/user/auth', UserController.auth)
+  api.post('/user', UserController.create)
+  api.post('/user/:id/check-password', Auth(), UserController.checkPassword)
+  api.post('/user/:id/change-password', Auth(), UserController.changePassword)
+  api.post('/user/:id/change-email', Auth(), UserController.changeEmail)
+  api.get('/user/:username/exist', UserController.exist)
+  api.get('/user/username/:username/exist', UserController.usernameExist)
+  api.get('/user/email/:email/exist', UserController.userEmailExist)
+  api.delete('/user/:id', Auth('admin'), UserController.adminDelete) // admin delete any user
 
   /**
    * ACCOUNT
    */
-  api.get('/me', Auth(), UserCtrl.get) // personal data
-  api.delete('/me', Auth(), UserCtrl.delete) // delete it's own account
+  api.get('/me', Auth(), UserController.get) // personal data
+  api.delete('/me', Auth(), UserController.delete) // delete it's own account
 
+  /**
+   * Catch-all 404
+   */
   api.all('*', (req, res) => {
     return res.status(404).json({
       success: false,
@@ -48,4 +51,6 @@ module.exports = (express, app) => {
   })
 
   app.use('/api', api)
+
+  app.post('/setup', UserController.setup)
 }

@@ -11,19 +11,18 @@ const UserSchema = mongoose.Schema({
   email: {
     type: String,
     validate: {
-      validator: (v) => validator.isEmail(v),
+      validator: value => validator.isEmail(value),
       message: 'Insert a valid valid email.',
     },
     required: [true, 'Email is required!'],
     unique: true,
   },
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: [true, 'User exist'] },
   password: { type: String, required: [true, 'Password is required.'] },
   created: { type: Date, default: Date.now() },
   admin: { type: Boolean, default: false },
   //.........
 })
-
 
 UserSchema.pre('save', function userPreSave(next) {
   const user = this
@@ -55,6 +54,7 @@ UserSchema.methods.auth = function auth() {
   return new Promise((resolve) => {
     const usr = this.toJSON()
     delete usr.password
+    console.log(usr)
     const token = jwt.sign(usr, secrets.APP_KEY)
     return resolve({
       message: 'Authorization token',

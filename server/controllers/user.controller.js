@@ -1,6 +1,51 @@
 const User = require('../models/user.model')
 
 module.exports = {
+  setup: (req, res) => {
+    const newUser = req.body
+    if (!newUser.username) {
+      return res.status(403).json({
+        success: false,
+        message: 'Username is required, none provided.'
+      })
+    }
+    if (!newUser.email) {
+      return res.status(403).json({
+        success: false,
+        message: 'Email is required, none provided.'
+      })
+    }
+    if (!newUser.password) {
+      return res.status(403).json({
+        success: false,
+        message: 'Password is required, none provided.'
+      })
+    }
+    return User.count({ admin: true })
+    .then((adminExist) => {
+      if (adminExist) {
+        return Promise.reject({
+          status: 403,
+          message: 'An admin user already exist.'
+        })
+      }
+      newUser.admin = true
+      return User.create(newUser)
+    })
+    .then((user) => {
+      return user.auth()
+    })
+    .then((token) => {
+      return res.json(token)
+    })
+    .catch((err) => {
+      return res.status(err.status ? err.status : 500).json({
+        success: false,
+        message: err,
+      })
+    })
+  },
+
   index: (req, res) => {
     return User.find({})
     .then((users) => {
@@ -42,6 +87,47 @@ module.exports = {
       return res.status(err.status ? err.status : 500).json({
         success: false,
         message: err.message ? err.message : err,
+      })
+    })
+  },
+
+  create: (req, res) => {
+    const { body: newUser } = req
+    if (!newUser.username) {
+      return res.status(403).json({
+        success: false,
+        message: 'Username is required, none provided.'
+      })
+    }
+    if (!newUser.email) {
+      return res.status(403).json({
+        success: false,
+        message: 'Email is required, none provided.'
+      })
+    }
+    if (!newUser.password) {
+      return res.status(403).json({
+        success: false,
+        message: 'Password is required, none provided.'
+      })
+    }
+    return User.create(newUser)
+    .then((user) => {
+      return user.auth()
+    })
+    .then((token) => {
+      return res.json(token)
+    })
+    .catch((err) => {
+      if (err.code && err.code === 11000) {
+        return res.status(400).json({
+          success: false,
+          message: 'User exists.',
+        })
+      }
+      return res.status(500).json({
+        success: false,
+        message: err.message ? err.message : 'Some error occured.',
       })
     })
   },
@@ -275,46 +361,6 @@ module.exports = {
       return res.status(err.status ? err.status : 500).json({
         success: false,
         message: err.message ? err.message : err,
-      })
-    })
-  },
-  create: (req, res) => {
-    const { body: newUser } = req
-    if (!newUser.username) {
-      return res.status(403).json({
-        success: false,
-        message: 'Username is required, none provided.'
-      })
-    }
-    if (!newUser.email) {
-      return res.status(403).json({
-        success: false,
-        message: 'Email is required, none provided.'
-      })
-    }
-    if (!newUser.password) {
-      return res.status(403).json({
-        success: false,
-        message: 'Password is required, none provided.'
-      })
-    }
-    return User.create(newUser)
-    .then((user) => {
-      return user.auth()
-    })
-    .then((token) => {
-      return res.json(token)
-    })
-    .catch((err) => {
-      if (err.code && err.code === 11000) {
-        return res.status(400).json({
-          success: false,
-          message: 'User exists.',
-        })
-      }
-      return res.status(500).json({
-        success: false,
-        message: err.message ? err.message : 'Some error occured.',
       })
     })
   },
