@@ -54,7 +54,6 @@ UserSchema.methods.auth = function auth() {
   return new Promise((resolve) => {
     const usr = this.toJSON()
     delete usr.password
-    console.log(usr)
     const token = jwt.sign(usr, secrets.APP_KEY)
     return resolve({
       message: 'Authorization token',

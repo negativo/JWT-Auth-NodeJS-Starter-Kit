@@ -7,7 +7,7 @@ const User = require(testenv.serverdir + 'models/user.model')
 
 chai.use(chaiHttp)
 
-describe.only('User - API', () => {
+describe('User - API', () => {
   var admin_token, user_token
   var normal_user = {
     username: 'TestUser' + Date.now(),
@@ -98,17 +98,6 @@ describe.only('User - API', () => {
       .end((err, res) => {
         expect(res.body.success).toBe(false)
         expect(res.body.message).toExist()
-        done()
-      })
-    })
-
-    it('should given an username check if exists', (done) => {
-      chai.request(app)
-      .get(`/api/user/${normal_user.username}/exist`)
-      .end((err,res) => {
-        expect(res.status).toBe(409)
-        expect(res.body.success).toBe(true)
-        expect(res.body.exist).toBe(true)
         done()
       })
     })

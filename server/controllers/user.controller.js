@@ -64,11 +64,34 @@ module.exports = {
     })
   },
 
+  get: (req, res) => {
+    const { id } = req.params
+    return User.findById(id._id, '-password -__v -created')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject({
+          message: 'User not found.',
+          status: 404,
+        })
+      }
+      return res.json({
+        success: true,
+        user,
+      })
+    })
+    .catch((err) => {
+      return res.status(err.status ? err.status : 500).json({
+        success: false,
+        message: err.message ? err.message : err,
+      })
+    })
+  },
+
   /**
    * Get "logged user" personal data
    * route is restricted by JWT, JWT data if authenticated is in req.user
    */
-  get: (req, res) => {
+  getAuthAccount: (req, res) => {
     const { user } = req
     return User.findById(user._id, '-password -__v -created')
     .then((user) => {
@@ -191,7 +214,7 @@ module.exports = {
   /**
    * Change Password
    * NB: check req id with current user in req.user
-   * avoid check for other user password on api route, if not admin
+   * avoid change other user password if not admin
    */
   changePassword: (req, res) => {
     const { id } = req.params
@@ -266,7 +289,7 @@ module.exports = {
   /**
    * Change Email
    * NB: check req id with current user in req.user
-   * avoid check for other user password on api route, if not admin
+   * avoid change other user emails if not admin
    */
   changeEmail: (req, res) => {
     const { id } = req.params
@@ -329,6 +352,9 @@ module.exports = {
     })
   },
 
+  /**
+   * Auth + return access token + user data for frontend
+   */
   auth: (req, res) => {
     const { body: user } = req
     let fetchedUser
@@ -364,33 +390,11 @@ module.exports = {
       })
     })
   },
-  exist: (req, res) => {
-    const username = req.body.username || req.params.username
-    if (!username) {
-      return res.status(400).json({
-        success: false,
-        message: 'No username provided!',
-      })
-    }
-    return User.findOne({ username }, (err, usr) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: err,
-        })
-      }
-      if (!usr) {
-        return res.status(200).json({
-          success: true,
-          exist: false,
-        })
-      }
-      return res.status(409).json({
-        success: true,
-        exist: true,
-      })
-    })
-  },
+
+  /**
+   * Check if user exist
+   *  -for forms ajax error messages
+   */
   usernameExist: (req, res) => {
     const { username } = req.params
     if (!username) {
@@ -419,6 +423,11 @@ module.exports = {
         })
       })
   },
+
+  /**
+   * Check if user email
+   *  -for forms ajax error messages
+   */
   userEmailExist: (req, res) => {
     const { email } = req.params
     if (!email) {
