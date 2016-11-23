@@ -8,4 +8,4 @@ pids
 lib-cov
 node_modules
 .lock-wscript
-.env
+.env.production

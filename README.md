@@ -10,16 +10,18 @@ This is a starting point to have an API up and running in notime.
 The Api Features:
 
 	- JWT Auth Token
+	- Separate .env file
 	- User Management
 
 ##Installation
 
-This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
+This project needs NodeJS > v6.9.0, MongoDB and `forever` to manage the process.
 
 - clone the project `git clone git@github.com:negativo/JWT-Auth-NodeJS-Starter-Kit`
 - run `npm install`
 - run `mongod`
-- edit `.env.example` and save it as `.env`
+- edit `.env` and save it as `.env`
+- edit `.env.production` for production
 - `npm start`
 - `npm test`
 
@@ -27,23 +29,17 @@ This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 
 ###Setup test user
 
-To setup an admin user edit your `.env` file and request the url  `http://localhost:8282/setup`
-
-`curl http://localhost:8282/setup`
+`curl -X POST -H 'Content-Type: application/json' -d '{"username":"admin","password":"password", "email": "email@example.com"}' http://localhost:8181/setup`
 
 ###Versioning
 
 ###Authenticate
 
-To authenticate a user do a POST request to http://localhost:8282/auth
-with the `name` and the `password` in the body
+To authenticate a user do a POST request to http://localhost:8181/api/user/auth
+with the `email` and the `password` in the body
 
 	{
-		name:"jwtauth",
+		email:"jwtauth",
 		password:"jwtauth"
 
 	}
-
-
-`curl -H "Content-Type: application/json" -X POST -d '{ "name":"jwtauth","password":"jwtauth"}' http://localhost:8282/api/auth`
-
