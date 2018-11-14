@@ -1,9 +1,9 @@
 {
-  "name": "Simple-JWT-api-starter-kit",
+  "name": "jwt-kit",
   "main": "api.js",
   "scripts": {
-    "start":"forever --watch --watchDirectory ./app api.js",
-    "production": "NODE_ENV=production forever start api.js",
+    "start": "./node_modules/forever/bin/forever -c 'node --harmony' --watch --watchDirectory ./app api.js",
+    "production": "NODE_ENV=production ./node_modules/forever/bin/forever start api.js",
     "test": "PORT=3001 NODE_ENV=TEST mocha"
   },
   "dependencies": {
@@ -11,6 +11,7 @@
     "body-parser": "^1.15.0",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
+    "forever": "^0.15.3",
     "jsonwebtoken": "^5.7.0",
     "mongoose": "^4.4.5",
     "morgan": "^1.7.0"

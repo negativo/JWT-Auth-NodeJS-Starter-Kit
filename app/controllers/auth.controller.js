@@ -72,15 +72,17 @@ module.exports = function(app,User){
     },
     
     authenticate:function(req, res) {
-      var { username, password } = req.body;
-      if(!username || !username.length ) {
+      const { name, password } = req.body;
+      if(!name || !name.length ) {
         return res.status(400).json({
           success: false,
           message: 'No username provided'
         })
       };
+
+      console.log(User);
       User.findOne({
-        username: username
+        username: name
       }, function(err, user) {
         if (err) {
           return res.status(500).json({

@@ -14,6 +14,12 @@ The Api Features:
 
 ##Installation
 
+###With Docker
+
+- docker-compose up
+
+###Without Docker
+
 This project needs NodeJS > v5.0.0, MongoDB and `forever` to manage the process.
 
 - clone the project `git clone git@github.com:negativo/JWT-Auth-NodeJS-Starter-Kit`
@@ -45,5 +51,6 @@ with the `name` and the `password` in the body
 	}
 
 
-`curl -H "Content-Type: application/json" -X POST -d '{ "name":"jwtauth","password":"jwtauth"}' http://localhost:8282/api/auth`
+`curl -H "Content-Type: application/json" -X GET http://localhost:8080/setup`
+`curl -H "Content-Type: application/json" -X POST -d '{ "name":"user","password":"password"}' http://localhost:8080/api/auth`
 
