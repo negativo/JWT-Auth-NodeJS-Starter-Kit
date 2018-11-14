@@ -16,6 +16,7 @@ The Api Features:
 
 ###With Docker
 
+- edit `.env.example` and save it as `.env`
 - docker-compose up
 
 ###Without Docker
