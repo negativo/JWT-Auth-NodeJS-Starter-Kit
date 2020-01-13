@@ -13,7 +13,7 @@
     "express": "^4.16.4",
     "forever": "^0.15.3",
     "jsonwebtoken": "^5.7.0",
-    "mongoose": "^4.13.17",
+    "mongoose": "^5.7.5",
     "morgan": "^1.9.1"
   },
   "devDependencies": {
